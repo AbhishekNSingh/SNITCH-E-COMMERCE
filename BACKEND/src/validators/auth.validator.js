@@ -14,15 +14,25 @@ function validateRequest(req,res,next){
 
 export const validateUserInput = [
     body("email")
-        .isEmail.withMessage("Email should be in valid format"),
+        .isEmail().withMessage("Email should be in valid format"),
     body("fullName")
-        .notEmpty.withMessage("fullName is required")
-        .length({min:3}).withMessage("fullName cannot be smaller than 3 characters"), 
+        .notEmpty().withMessage("fullName is required")
+        .isLength({min:3}).withMessage("fullName cannot be smaller than 3 characters"), 
     body("contact")
-        .notEmpty.withMessage("conatact is required")
+        .notEmpty().withMessage("conatact is required")
         .matches(/^\d{10}$/).withMessage("conatct must be a 10 digit number"),
     body("password")
-        .length({min:6}).withMessage("pasword cannot be smaller than 6 characters"),
+        .isLength({min:6}).withMessage("pasword cannot be smaller than 6 characters"),
+    body("isSeller")
+        .isBoolean().withMessage("isSeller must be a boolean value"),
 
+    validateRequest
+]
+
+export const validateLoginUser = [
+    body("email")
+        .isEmail().withMessage("Email should be in valid format"),
+    body("password")
+        .isLength({min:6}).withMessage("pasword cannot be smaller than 6 characters"),
     validateRequest
 ]

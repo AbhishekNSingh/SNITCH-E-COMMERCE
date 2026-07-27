@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
     email:{type:String, required :true,unique:true},
     contact:{type:String, required :true},
     password:{type:String, required :true},
-    fulllName:{type:String, required :true},
+    fullName:{type:String, required :true},
     role:{
         type:String,
         enum:["seller","buyer"],
@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema({
 
 userSchema.pre("save",async function ()  {
     if(!this.isModified("password")) return;
-    const hash = await bcrypt.hash(password,10);
+    const hash = await bcrypt.hash(this.password,10);
     this.password = hash;
 })
 
