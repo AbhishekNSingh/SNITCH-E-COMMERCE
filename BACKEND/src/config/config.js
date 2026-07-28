@@ -7,8 +7,16 @@ if(!process.env.MONGO_URI){
 if(!process.env.JWT_SECRET){
     throw new Error("MONGO_URI is not defined in environemnt variable")
 }
+if(!process.env.GOOGLE_CLIENT_ID){
+    throw new Error("GOOGLE_CLIENT_ID is not defined in environemnt variable")
+}
+if(!process.env.GOOGLE_CLIENT_SECRET){
+    throw new Error("GOOGLE_CLIENT_SECRET is not defined in environemnt variable")
+}
 
 export const CONFIG = {
     MONGO_URI : process.env.MONGO_URI,
-    JWT_SECRET : process.env.JWT_SECRET
+    JWT_SECRET : process.env.JWT_SECRET,
+    GOOGLE_CLIENT_ID : process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
 }

@@ -7,7 +7,7 @@ const Register = () => {
     const { handleRegister } = useAuth()
     const navigate = useNavigate()
 
-    const [ formData, setFormData ] = useState({
+    const [formData, setFormData] = useState({
         fullName: '',
         contactNumber: '',
         email: '',
@@ -19,7 +19,7 @@ const Register = () => {
         const { name, value, type, checked } = e.target;
         setFormData(prev => ({
             ...prev,
-            [ name ]: type === 'checkbox' ? checked : value
+            [name]: type === 'checkbox' ? checked : value
         }));
     };
 
@@ -147,6 +147,9 @@ const Register = () => {
                             </div>
                             <label htmlFor="isSeller" className="text-sm text-[#e5e2e1] group-hover:text-[#FFD700] cursor-pointer select-none transition-colors duration-300">Register as Seller</label>
                         </div>
+                        <a href="/api/auth/google"
+                            className="text-sm underline text-[#e5e2e1] group-hover:text-[#FFD700] cursor-pointer select-none transition-colors duration-300"
+                        >Continue with Google</a>
 
                         {/* Submit Button */}
                         <button

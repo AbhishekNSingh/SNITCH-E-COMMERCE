@@ -70,3 +70,8 @@ export const login = async (req, res) => {
     await sendTokenResponse(user,res,"user logged in successfuly")
 
 }
+export const googlecallback = async(req,res) => {
+    console.log(req.user)
+
+    res.redirect("http://localhost:5173/")
+}
