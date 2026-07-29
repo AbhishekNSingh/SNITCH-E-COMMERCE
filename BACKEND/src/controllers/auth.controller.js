@@ -52,26 +52,48 @@ export const register = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-    const {email,password} = req.body;
+    const { email, password } = req.body;
 
 
-    const user = await userModel.findOne({email})
+    const user = await userModel.findOne({ email })
 
-    if(!user){
-        return res.status(400).json({message:"Invalid email or password"})
+    if (!user) {
+        return res.status(400).json({ message: "Invalid email or password" })
     }
 
     const isMatch = await user.comparePassword(password);
 
-    if(!isMatch){
-        return res.status(400).json({message:"Invalid email or password"})
+    if (!isMatch) {
+        return res.status(400).json({ message: "Invalid email or password" })
     }
 
-    await sendTokenResponse(user,res,"user logged in successfuly")
+    await sendTokenResponse(user, res, "user logged in successfuly")
 
 }
-export const googlecallback = async(req,res) => {
-    console.log(req.user)
+export const googlecallback = async (req, res) => {
+    const { id, displayName, name, emails, photos } = req.user;
+    const email = emails[0].value;
+    const profilePic = photos[0].value;
 
-    res.redirect("http://localhost:5173/")
+    let user = await userModel.findOne({ email });
+
+    if (!user) {
+        user = await userModel.create({
+            email,
+            googleId: id,
+            fullName: displayName,
+
+        })
+    }
+
+    const token = jwt.sign({
+        id: user._id
+    }, CONFIG.JWT_SECRET, { expiresIn: "7d" })
+
+    res.cookie("token", token)
+    
+
+    res.redirect("http://localhost:5173/");
+    
+
 }

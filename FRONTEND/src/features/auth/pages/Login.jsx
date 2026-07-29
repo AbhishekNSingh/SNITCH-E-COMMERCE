@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from "../hook/useAuth";
 import { useNavigate } from "react-router";
+import ContinueWithGOogle from '../components/ContinueWithGOogle';
 
 const Login = () => {
     const { handleLogin } = useAuth();
@@ -33,7 +34,7 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#0e0e0e] text-[#e5e2e1] font-sans selection:bg-[#FFD700] selection:text-[#131313] flex flex-col lg:flex-row">
+        <div className="h-screen bg-[#0e0e0e] text-[#e5e2e1] font-sans selection:bg-[#FFD700] selection:text-[#131313] flex flex-col lg:flex-row">
 
             {/* Split Screen - Left Image Section (Hidden on mobile, visible on lg screens) */}
             <div className="hidden lg:flex lg:w-1/2 relative bg-[#131313] items-center justify-center overflow-hidden border-r border-[#1c1b1b]">
@@ -109,6 +110,8 @@ const Login = () => {
                         >
                             Sign In
                         </button>
+
+                        <ContinueWithGOogle />
 
                         <div className="text-center mt-6">
                             <a href="/register" className="text-sm text-[#999077] hover:text-[#FFD700] transition-colors border-b border-transparent hover:border-[#FFD700] py-0.5">
