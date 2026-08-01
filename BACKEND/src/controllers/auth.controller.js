@@ -21,6 +21,7 @@ async function sendTokenResponse(user, res, message) {
 
 }
 
+
 export const register = async (req, res) => {
     const { email, contact, password, fullName, isSeller } = req.body;
     try {
@@ -91,9 +92,28 @@ export const googlecallback = async (req, res) => {
     }, CONFIG.JWT_SECRET, { expiresIn: "7d" })
 
     res.cookie("token", token)
-    
+
 
     res.redirect("http://localhost:5173/");
-    
 
+
+}
+
+export const getMe = async (req, res) => {
+    const user = req.user;
+    if (!user) {
+        return res.status(400).json({ message: "Invalid email or password" })
+    }
+
+    res.status(201).json({
+        message: "user fetched successfully",
+        status: true,
+        user: {
+            id: user._id,
+            email: user.email,
+            contact: user.conatct,
+            fullName: user.fullName,
+            role: user.role
+        }
+    })
 }
