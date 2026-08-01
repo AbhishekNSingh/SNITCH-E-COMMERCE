@@ -16,18 +16,28 @@ export async function createProduct(req, res) {
     const product = await productModel.create({
         title,
         description,
-        price:{
-            amount:priceAmount,
-            currency:priceCurrency || "INR"
+        price: {
+            amount: priceAmount,
+            currency: priceCurrency || "INR"
         },
         images,
-        seller:seller._id
+        seller: seller._id
     })
 
     return res.status(201).json({
-        message:"product created successfully",
-        success:true,
+        message: "product created successfully",
+        success: true,
         product
     })
 
+}
+
+export async function getSellerProducts(req, res) {
+    const seller = req.user;
+    const products = await productModel.find({seller:seller._id});
+    res.status(200).json({
+        message:"Products fetched successfully",
+        success:true,
+        products
+    })
 }
