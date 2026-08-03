@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useAuth } from "../hook/useAuth";
 import { useNavigate } from "react-router";
 import ContinueWithGoogle from '../components/ContinueWithGoogle';
+import MainHome from "../pages/assets/MainHome.png";
+
 
 const Login = () => {
     const { handleLogin } = useAuth();
@@ -47,7 +49,7 @@ const Login = () => {
                 {/* ── LEFT: Editorial Image Panel ── */}
                 <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden" style={{ backgroundColor: '#f5f3f0' }}>
                     <img
-                        src="/snitch_editorial.png"
+                        src={MainHome}
                         alt="Snitch Fashion Editorial"
                         className="absolute inset-0 w-full h-full object-cover"
                         style={{ filter: 'sepia(20%) brightness(0.92)' }}

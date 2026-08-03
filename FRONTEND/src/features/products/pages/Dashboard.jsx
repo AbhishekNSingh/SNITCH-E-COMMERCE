@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {useproduct } from '../hook/useProduct';
+import { useproduct } from '../hook/useProduct';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
@@ -89,7 +89,10 @@ const Dashboard = () => {
                                     : '/snitch_editorial_warm.png'; // Fallback to our warm editorial
 
                                 return (
-                                    <div key={product._id} className="group cursor-pointer flex flex-col">
+
+                                    <div
+                                        onClick={() => { navigate(`/seller/product/${product._id}`) }}
+                                        key={product._id} className="group cursor-pointer flex flex-col">
                                         {/* Image Container */}
                                         <div className="aspect-[4/5] overflow-hidden mb-6" style={{ backgroundColor: '#f5f3f0' }}>
                                             <img
