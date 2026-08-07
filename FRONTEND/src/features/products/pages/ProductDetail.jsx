@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router';
 import { useproduct } from '../hook/useProduct';
+import { useCart } from "../../cart/hooks/useCart"
 
 const ProductDetail = () => {
     const { productId } = useParams();
-    const [ product, setProduct ] = useState(null);
-    const [ selectedImage, setSelectedImage ] = useState(0);
-    const [ selectedAttributes, setSelectedAttributes ] = useState({});
+    const [product, setProduct] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(0);
+    const [selectedAttributes, setSelectedAttributes] = useState({});
     const navigate = useNavigate();
     const { handlegetProductById } = useproduct();
+    const { handleAddItem } = useCart()
 
     async function fetchProductDetails() {
         try {
@@ -22,13 +24,13 @@ const ProductDetail = () => {
 
     useEffect(() => {
         fetchProductDetails();
-    }, [ productId ]);
+    }, [productId]);
 
     useEffect(() => {
         if (product?.variants?.length > 0) {
             setSelectedAttributes(product.variants[0].attributes || {});
         }
-    }, [ product ]);
+    }, [product]);
 
     const activeVariant = useMemo(() => {
         if (!product?.variants || product.variants.length === 0) return null;
@@ -66,12 +68,12 @@ const ProductDetail = () => {
 
     const handleAttributeChange = (attrName, value) => {
         const newAttrs = { ...selectedAttributes, [attrName]: value };
-        
+
         // Find if an exact match exists for this combination
         const exactMatch = product.variants.find(v => {
             const vAttrs = v.attributes || {};
             return Object.keys(newAttrs).every(k => newAttrs[k] === vAttrs[k]) &&
-                   Object.keys(vAttrs).every(k => newAttrs[k] === vAttrs[k]);
+                Object.keys(vAttrs).every(k => newAttrs[k] === vAttrs[k]);
         });
 
         if (exactMatch) {
@@ -98,14 +100,14 @@ const ProductDetail = () => {
     }
 
     console.log(product)
-    
-    // Fallbacks
-    const displayImages = (activeVariant?.images && activeVariant.images.length > 0) 
-        ? activeVariant.images 
-        : (product.images && product.images.length > 0 ? product.images : [ { url: '/snitch_editorial_warm.png' } ]);
 
-    const displayPrice = activeVariant?.price?.amount 
-        ? activeVariant.price 
+    // Fallbacks
+    const displayImages = (activeVariant?.images && activeVariant.images.length > 0)
+        ? activeVariant.images
+        : (product.images && product.images.length > 0 ? product.images : [{ url: '/snitch_editorial_warm.png' }]);
+
+    const displayPrice = activeVariant?.price?.amount
+        ? activeVariant.price
         : product.price;
 
     return (
@@ -164,7 +166,7 @@ const ProductDetail = () => {
                             {/* Main Image */}
                             <div className="relative w-full aspect-4/5 overflow-hidden group" style={{ backgroundColor: '#f5f3f0' }}>
                                 <img
-                                    src={displayImages[ selectedImage ]?.url || displayImages[ 0 ].url}
+                                    src={displayImages[selectedImage]?.url || displayImages[0].url}
                                     alt={product.title}
                                     className="w-full h-full object-cover transition-opacity duration-500"
 
@@ -275,6 +277,13 @@ const ProductDetail = () => {
                                     onMouseLeave={e => {
                                         e.currentTarget.style.backgroundColor = '#1b1c1a';
                                         e.currentTarget.style.color = '#fbf9f6';
+                                    }}
+                                    onClick={() => {
+                                        console.log(product._id,activeVariant._id)
+                                        handleAddItem({
+                                            productId: product._id,
+                                            variantId: activeVariant._id
+                                        })
                                     }}
                                 >
                                     Add to Cart
