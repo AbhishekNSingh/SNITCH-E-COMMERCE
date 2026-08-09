@@ -22,7 +22,7 @@ const tokens = {
 
 const Cart = () => {
     const cartItems = useSelector(state => state.cart.items)
-    const {  handleGetCart,handleIncrementCartItem } = useCart()
+    const { handleGetCart, handleIncrementCartItem } = useCart()
     const navigate = useNavigate()
 
     /* Local quantity state — key: cartItem._id, value: number */
@@ -157,7 +157,7 @@ const Cart = () => {
                 className="min-h-screen pb-24 selection:bg-[#C9A96E]/30"
                 style={{ backgroundColor: tokens.surface, fontFamily: "'Inter', sans-serif" }}
             >
-               
+
 
                 {/* ── Main Content ── */}
                 <div className="max-w-7xl mx-auto px-8 lg:px-16 xl:px-24 pt-12 lg:pt-20">
@@ -190,13 +190,14 @@ const Cart = () => {
                             {/* ── Cart Item List ── */}
                             <div className="flex flex-col gap-6">
                                 {cartItems.map(item => {
-                                    const { product, variant: variantId, price, product:{_id} } = item
+                                    const { product, variant: variantId, price, product: { _id } } = item
                                     const variantDetail = getVariantDetails(product, variantId)
                                     const imageUrl = getDisplayImage(product, variantDetail)
                                     const displayPrice = price ?? variantDetail?.price ?? product?.price
                                     const qty = quantities[_id] ?? item.quantity ?? 1
                                     const attributes = variantDetail?.attributes ?? {}
                                     const stock = variantDetail?.stock
+                                    const variantPrice = variantDetail?.price
 
                                     return (
                                         <div
@@ -279,6 +280,16 @@ const Cart = () => {
                                                             {stock > 0 ? `${stock} in stock` : 'Out of stock'}
                                                         </p>
                                                     )}
+                                                    {
+                                                        displayPrice.amount !== variantPrice.amount && (
+                                                            <>
+                                                                {displayPrice.amount > variantPrice.amount
+                                                                    ? <p className="text-[10px] uppercase tracking-[0.15em] mb-4 text-green-800 font-bold" > you will get this at {formatCurrency(variantPrice.amount, variantPrice.currency)} save {Math.abs(variantPrice.amount - displayPrice.amount)}.  </p>
+                                                                    : <p className="text-[10px] uppercase tracking-[0.15em] mb-4 text-red-600 font-bold" > Warning this product will cost you {Math.abs(variantPrice.amount - displayPrice.amount)} more.  </p>
+                                                                }
+                                                            </>
+                                                        )
+                                                    }
                                                 </div>
 
                                                 {/* Bottom Row: Quantity + Remove */}
@@ -305,7 +316,7 @@ const Cart = () => {
                                                         </span>
                                                         <button
                                                             id={`qty-inc-${_id}`}
-                                                            onClick={() =>handleIncrementCartItem({productId:_id,variantId})}
+                                                            onClick={() => handleIncrementCartItem({ productId: _id, variantId })}
                                                             className="w-9 h-9 flex items-center justify-center text-sm font-light transition-colors hover:opacity-60"
                                                             style={{ color: tokens.onSurface, borderLeft: `1px solid ${tokens.outlineVariant}` }}
                                                             aria-label="Increase quantity"
